@@ -149,13 +149,13 @@ def predict(args):
         pred_image, pred_info = _make_submission_files(pred_arr, image_id,
             dataset.image_affine)
         pred_info_list.append(pred_info)
-        pred_path = os.path.join(args.pred_dir, f"{image_id}_pred.nii.gz")
+        pred_path = os.path.join(args.pred_dir, f"{image_id}-label.nii.gz")
         nib.save(pred_image, pred_path)
 
         progress.update()
 
     pred_info = pd.concat(pred_info_list, ignore_index=True)
-    pred_info.to_csv(os.path.join(args.pred_dir, "pred_info.csv"),
+    pred_info.to_csv(os.path.join(args.pred_dir, "ribfrac-test-pred.csv"),
         index=False)
 
 

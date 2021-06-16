@@ -6,6 +6,8 @@ from fastai.train import ShowGraph
 from fastai.data_block import DataBunch
 from torch import optim
 
+import torch
+
 from dataset.fracnet_dataset import FracNetTrainDataset
 from dataset import transforms as tsfm
 from utils.metrics import dice, recall, precision, fbeta_score
@@ -19,7 +21,7 @@ def main(args):
     val_image_dir = args.val_image_dir
     val_label_dir = args.val_label_dir
 
-    batch_size = 4
+    batch_size = 8
     num_workers = 4
     optimizer = optim.SGD
     criterion = MixLoss(nn.BCEWithLogitsLoss(), 0.5, DiceLoss(), 1)
@@ -57,7 +59,7 @@ def main(args):
     )
 
     learn.fit_one_cycle(
-        200,
+        100,
         1e-1,
         pct_start=0,
         div_factor=1000,
@@ -83,7 +85,7 @@ if __name__ == "__main__":
         help="The validation image nii directory.")
     parser.add_argument("--val_label_dir", required=True,
         help="The validation label nii directory.")
-    parser.add_argument("--save_model", default=False,
+    parser.add_argument("--save_model", default=True,
         help="Whether to save the trained model.")
     args = parser.parse_args()
 
